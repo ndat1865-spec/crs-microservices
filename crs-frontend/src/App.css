@@ -1,1 +1,148 @@
-.app{max-width:900px;margin:0 auto;padding:40px;font-family:Arial,sans-serif}.course{padding:20px;margin:12px 0;border:1px solid #dbe3ef;border-radius:12px;background:#f8fafc}.error{color:#b91c1c}
+.app {
+  width: min(900px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 56px 0;
+  text-align: left;
+}
+
+.app__header {
+  margin-bottom: 32px;
+}
+
+.app__header h1 {
+  margin: 4px 0 8px;
+}
+
+.app__eyebrow {
+  color: #2563eb;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.search-box {
+  display: block;
+  max-width: 440px;
+}
+
+.search-box__label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text-h);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.search-box input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text-h);
+  font: inherit;
+}
+
+.search-box input:focus {
+  border-color: #2563eb;
+  outline: 3px solid rgb(37 99 235 / 15%);
+}
+
+.course-list {
+  min-height: 180px;
+  margin-top: 24px;
+}
+
+.course-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.course-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text-h);
+}
+
+.course-table th,
+.course-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.course-table th {
+  background: var(--social-bg);
+  font-size: 0.85rem;
+}
+
+.course-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.course-table__full {
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.status-message {
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--social-bg);
+}
+
+.status-message--error {
+  color: #b91c1c;
+}
+
+.status-message button,
+.pagination button {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text-h);
+  cursor: pointer;
+  font: inherit;
+}
+
+.status-message button {
+  margin-top: 14px;
+}
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.pagination button:hover:not(:disabled) {
+  border-color: #2563eb;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.pagination .pagination__page--active {
+  border-color: #2563eb;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .app {
+    padding: 32px 0;
+  }
+
+  .course-table th,
+  .course-table td {
+    padding: 12px;
+  }
+}

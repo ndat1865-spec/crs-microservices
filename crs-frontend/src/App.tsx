@@ -1,12 +1,42 @@
-import { useEffect, useState } from 'react'
-import { getCourses } from './api/courseApi'
-import type { Course } from './types/course'
+import { useCallback, useState } from 'react'
+import { useCourses } from './api/useCourses'
+import CourseList from './components/CourseList'
+import Pagination from './components/Pagination'
+import SearchBox from './components/SearchBox'
 import './App.css'
 
 function App() {
-  const [courses, setCourses] = useState<Course[]>([])
-  const [error, setError] = useState<string | null>(null)
-  useEffect(() => { getCourses().then((res) => setCourses(res.data.content)).catch(() => setError('Không kết nối được Gateway hoặc course-service.')) }, [])
-  return <main className="app"><h1>CRS - Danh sách môn học</h1>{error && <p className="error">{error}</p>}{!error && courses.map((c) => <article className="course" key={c.id}><h2>{c.tenMonHoc}</h2><p>{c.soTinChi} tín chỉ - còn {c.soChoConLai}/{c.soChoToiDa} chỗ</p></article>)}</main>
+  const [keyword, setKeyword] = useState('')
+  const [page, setPage] = useState(0)
+  const { courses, totalPages, state, errorMessage, refetch } = useCourses(keyword, page)
+
+  const handleSearch = useCallback((newKeyword: string) => {
+    setKeyword(newKeyword)
+    setPage(0)
+  }, [])
+
+  return (
+    <main className="app">
+      <header className="app__header">
+        <p className="app__eyebrow">CRS</p>
+        <h1>Danh sách môn học</h1>
+        <p>Tìm kiếm và xem số chỗ còn lại của các môn học đang mở.</p>
+      </header>
+
+      <SearchBox onSearch={handleSearch} />
+
+      <section className="course-list" aria-live="polite">
+        <CourseList
+          courses={courses}
+          state={state}
+          errorMessage={errorMessage}
+          onRetry={refetch}
+        />
+      </section>
+
+      <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
+    </main>
+  )
 }
+
 export default App
