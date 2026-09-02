@@ -25,6 +25,7 @@ export default function AdminCoursesPage() {
   const [editingCourse, setEditingCourse] = useState<Course | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
+  const [formVersion, setFormVersion] = useState(0)
   const { courses, totalPages, state, errorMessage: loadError, refetch } = useCourses(keyword, page)
 
   const handleSubmit = async (values: CourseFormValues) => {
@@ -33,6 +34,7 @@ export default function AdminCoursesPage() {
       if (editingCourse) await updateCourse(editingCourse.id, values)
       else await createCourse(values)
       setEditingCourse(null)
+      setFormVersion((version) => version + 1)
       refetch()
     } catch (error) { setFormError(errorMessage(error)) }
     finally { setSubmitting(false) }
@@ -46,7 +48,7 @@ export default function AdminCoursesPage() {
 
   return <main className="app">
     <header className="app__header"><p className="app__eyebrow">ADMIN</p><h1>Quản trị môn học</h1></header>
-    <CourseForm editingCourse={editingCourse} onSubmit={handleSubmit} onCancel={() => setEditingCourse(null)} submitting={submitting} serverError={formError} />
+    <CourseForm key={`${editingCourse?.id ?? 'new'}-${formVersion}`} editingCourse={editingCourse} onSubmit={handleSubmit} onCancel={() => setEditingCourse(null)} submitting={submitting} serverError={formError} />
     <SearchBox onSearch={(value) => { setKeyword(value); setPage(0) }} />
     <section className="course-list"><CourseList courses={courses} state={state} errorMessage={loadError} onRetry={refetch} onEdit={setEditingCourse} onDelete={handleDelete} /></section>
     <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
